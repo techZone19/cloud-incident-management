@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/EventIngestion/">
+    <Project Path="src/Services/EventIngestion/EventIngestion.Api/EventIngestion.Api.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,17 @@
+@EventIngestion.Api_HostAddress = http://localhost:5166
+
+GET {{EventIngestion.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+POST {{EventIngestion.Api_HostAddress}}/api/events
+Content-Type: application/json
+{
+  "source": "AzureAppService",
+  "severity": "Critical",
+  "message": "Database connection timeout"
+}
+
+
+###
