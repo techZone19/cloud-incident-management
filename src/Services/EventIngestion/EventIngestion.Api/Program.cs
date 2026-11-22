@@ -30,10 +30,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapHealthChecks("/health");
-app.MapPost("/api/events", (EventRequest request, IEventIngestionService eventService) => 
+app.MapPost("/api/events", (EventRequest request, IEventIngestionService eventService) =>
 {
-     if (string.IsNullOrWhiteSpace(request.Source) ||
-        string.IsNullOrWhiteSpace(request.Message))
+    if (string.IsNullOrWhiteSpace(request.Source) ||
+       string.IsNullOrWhiteSpace(request.Message))
     {
         return Results.BadRequest("Source and Message are required.");
     }
@@ -44,16 +44,16 @@ app.MapPost("/api/events", (EventRequest request, IEventIngestionService eventSe
         request.Message);
 
     return Results.Accepted(
-        value: new 
-        { 
-             EventId = Guid.NewGuid(),
+        value: new
+        {
+            EventId = eventId,
             Status = "Received",
             request.Source,
             request.Severity,
-            request.Message 
+            request.Message
         });
-     
- });
+
+});
 
 
 app.Run();
