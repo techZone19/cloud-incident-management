@@ -1,5 +1,6 @@
 using Serilog;
 using EventIngestion.Api.Services;
+using EventIngestion.Api.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,9 +57,4 @@ app.MapPost("/api/events", (EventRequest request, IEventIngestionService eventSe
 });
 
 
-app.Run();
-
-public record EventRequest(
-    string Source,
-    string Severity,
-    string Message);
+await app.RunAsync();
