@@ -4,4 +4,7 @@
   <Folder Name="/src/Services/EventIngestion/">
     <Project Path="src/Services/EventIngestion/EventIngestion.Api/EventIngestion.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/EventIngestion.UnitTests/EventIngestion.UnitTests.csproj" />
+  </Folder>
 </Solution>

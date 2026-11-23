@@ -1,0 +1,32 @@
+
+name: Dependency Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scan:
+    name: NuGet Vulnerability Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Set up .NET 11
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '11.0.x'
+
+      - name: Restore dependencies and audit vulnerabilities
+        run: dotnet restore CloudIncidentManagement.slnx --force-evaluate
+
+      - name: Run unit tests
+        run: dotnet test tests/EventIngestion.UnitTests/EventIngestion.UnitTests.csproj --no-restore

@@ -1,4 +1,3 @@
-
 name: SonarQube
 
 on:
@@ -41,11 +40,20 @@ jobs:
         uses: SonarSource/sonarqube-auth-action@b372e2c2930aadfcc4f4399446da1e12772709ad # v1.2
         id: auth
 
-      - name: Build and analyze
+      - name: Build, test and analyze
         shell: pwsh
         env:
           SONAR_TOKEN: ${{ steps.auth.outputs.sonar-token }}
         run: |
-          dotnet sonarscanner begin /k:"techZone19_cloud-incident-management" /o:"techzone19" /d:sonar.token="$env:SONAR_TOKEN"
+          dotnet sonarscanner begin /k:"techZone19_cloud-incident-management" /o:"techzone19" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
           dotnet build CloudIncidentManagement.slnx --configuration Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          dotnet test CloudIncidentManagement.slnx --configuration Release --no-build --collect:"XPlat Code Coverage;Format=opencover"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
           dotnet sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
